@@ -26,3 +26,7 @@
   color: #42b983;
 }
 </style>
+
+<style lang="scss">
+@import "assets/scss/custom";
+</style>
