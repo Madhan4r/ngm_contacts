@@ -76,5 +76,91 @@
 <script>
 export default {
   name: "Login",
+  data() {
+    return {
+      testCollection: [],
+      id: "PzsfNYqxyeoi3klwJJMZ",
+      name: "madhan"
+    };
+  },
+  mounted() {
+    const db = this.$firebase.firestore();
+    db.collection("users")
+      .get()
+      .then(snap => {
+        const testCollection = [];
+        snap.forEach(doc => {
+          testCollection.push({ [doc.id]: doc.data() });
+        });
+        this.testCollection = testCollection;
+      });
+  },
+  methods: {
+    createContact() {
+      const db = this.$firebase.firestore();
+      db.collection("users")
+        .add({ name: "madhan", phno: 12345678 })
+        .then(() => {
+          console.log("Document successfully written!");
+        })
+        .catch(error => {
+          console.error("Error writing document: ", error);
+        });
+    },
+    updateContact() {
+      const db = this.$firebase.firestore();
+      let id = this.id;
+      db.collection("users")
+        .doc(id)
+        .update({
+          name: "name",
+          phno: 123456789
+        })
+        .then(() => {
+          console.log("Document successfully updated!");
+        })
+        .catch(error => {
+          console.error("Error updating document: ", error);
+        });
+    },
+    deleteContact() {
+      const db = this.$firebase.firestore();
+      let id = this.id;
+      db.collection("users")
+        .doc(id)
+        .delete()
+        .then(() => {
+          console.log("Document successfully deleted!");
+        })
+        .catch(error => {
+          console.error("Error removing document: ", error);
+        });
+    },
+    getContactByField() {
+      const db = this.$firebase.firestore();
+      db.collection("users")
+        .where("name", "==", this.name)
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            console.log(doc.id, " => ", doc.data());
+            this.name = doc.data().name;
+            this.phno = doc.data().phno;
+          });
+        });
+    },
+    getContactById() {
+      const db = this.$firebase.firestore();
+      db.collection("users")
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            if (doc.id == this.id) {
+              console.log(doc.id, " =>  founded : ", doc.data());
+            }
+          });
+        });
+    }
+  }
 };
 </script>
