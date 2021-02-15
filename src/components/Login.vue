@@ -79,14 +79,13 @@ export default {
   data() {
     return {
       testCollection: [],
-      id : "PzsfNYqxyeoi3klwJJMZ",
-      name : "madhan"
+      id: "PzsfNYqxyeoi3klwJJMZ",
+      name: "madhan"
     };
   },
   mounted() {
     const db = this.$firebase.firestore();
-    db
-      .collection("users")
+    db.collection("users")
       .get()
       .then(snap => {
         const testCollection = [];
@@ -96,73 +95,72 @@ export default {
         this.testCollection = testCollection;
       });
   },
-  methods:{
-    createContact(){
-    const db = this.$firebase.firestore();
-        db
-          .collection("users")
-          .add({ name:'madhan',phno:12345678 })
-          .then(() => {
-            console.log("Document successfully written!");
-          })
-          .catch((error) => {
-            console.error("Error writing document: ", error);
-          });
+  methods: {
+    createContact() {
+      const db = this.$firebase.firestore();
+      db.collection("users")
+        .add({ name: "madhan", phno: 12345678 })
+        .then(() => {
+          console.log("Document successfully written!");
+        })
+        .catch(error => {
+          console.error("Error writing document: ", error);
+        });
     },
-    updateContact(){
-    const db = this.$firebase.firestore();
-    var id = this.id;
-      db
-        .collection("users")
+    updateContact() {
+      const db = this.$firebase.firestore();
+      let id = this.id;
+      db.collection("users")
         .doc(id)
         .update({
-          name: 'name',
-          phno: 123456789,
+          name: "name",
+          phno: 123456789
         })
         .then(() => {
           console.log("Document successfully updated!");
         })
-        .catch((error) => {
+        .catch(error => {
           console.error("Error updating document: ", error);
         });
     },
-    deleteContact(){
-    const db = this.$firebase.firestore();
-    var id=this.id;
-      db
-        .collection("users")
+    deleteContact() {
+      const db = this.$firebase.firestore();
+      let id = this.id;
+      db.collection("users")
         .doc(id)
         .delete()
         .then(() => {
           console.log("Document successfully deleted!");
         })
-        .catch((error) => {
+        .catch(error => {
           console.error("Error removing document: ", error);
         });
     },
-    getContactByField(){
+    getContactByField() {
       const db = this.$firebase.firestore();
-      db.collection("users").where('name', '==', this.name).get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-                                      console.log(doc.id, ' => ', doc.data())
-                                      this.name = doc.data().name
-                                      this.phno = doc.data().phno
-                                    })
-      })
-      
+      db.collection("users")
+        .where("name", "==", this.name)
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            console.log(doc.id, " => ", doc.data());
+            this.name = doc.data().name;
+            this.phno = doc.data().phno;
+          });
+        });
     },
-    getContactById(){
+    getContactById() {
       const db = this.$firebase.firestore();
-      db.collection("users").get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-                      if (doc.id == this.id){
-                        console.log(doc.id, ' =>  founded : ', doc.data());
-                      }
-                })
-      })
-
-    },
-
+      db.collection("users")
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.forEach(doc => {
+            if (doc.id == this.id) {
+              console.log(doc.id, " =>  founded : ", doc.data());
+            }
+          });
+        });
+    }
   }
 };
 </script>

@@ -13,14 +13,13 @@ require('firebase/firestore');
 
 /* Paste your firebase configuration below */
 var firebaseConfig = {
-  apiKey: "AIzaSyCtra2tVzotOYVKcZQQHR3AiXtAfrmZnnE",
-  authDomain: "c-app-9ce0e.firebaseapp.com",
-  databaseURL: "https://c-app-9ce0e-default-rtdb.firebaseio.com",
-  projectId: "c-app-9ce0e",
-  storageBucket: "c-app-9ce0e.appspot.com",
-  messagingSenderId: "656441449816",
-  appId: "1:656441449816:web:3e816fe6339d11ff4f592d",
-  measurementId: "G-KEPXL7QTT2"
+  apiKey: "AIzaSyAMcpIR1eQbARWzLQvwZKH77wLwNJOZf0M",
+  authDomain: "ngm4contacts.firebaseapp.com",
+  databaseURL: "https://ngm4contacts-default-rtdb.firebaseio.com",
+  projectId: "ngm4contacts",
+  storageBucket: "ngm4contacts.appspot.com",
+  messagingSenderId: "786370858500",
+  appId: "1:786370858500:web:6f11b10c9530db21d26f51",
 };
 
 /* Initialize firebase with your configuration */
