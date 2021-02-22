@@ -7,46 +7,48 @@
             <div class="row justify-content-center my-auto">
               <div class="col-md-8 col-10 my-5">
                 <div class="row justify-content-center px-3 mb-3">
-                  <img id="logo" src="/img/ngm_logo.gif" />
+                  <img id="logo" src="/img/ngm_logo.gif" alt="logo" />
                 </div>
-                <h3 class="mb-5 text-center heading">ngm contacts</h3>
-                <h6 class="msg-info">Please login to your account</h6>
-                <div class="form-group">
-                  <label class="form-control-label text-muted">Username</label>
-                  <input
-                    type="text"
-                    id="email"
-                    name="email"
-                    placeholder="Phone no or email id"
-                    class="form-control"
-                  />
-                </div>
-                <div class="form-group">
-                  <label class="form-control-label text-muted">Password</label>
-                  <input
-                    type="password"
-                    id="psw"
-                    name="psw"
-                    placeholder="Password"
-                    class="form-control"
-                  />
-                </div>
-                <div class="row justify-content-center my-3 px-3">
-                  <button class="btn-block btn-color">Login</button>
-                </div>
+                <h3 class="mb-5 text-center heading">NGM CONTACTS</h3>
+                <h6 class="msg-info text-center">
+                  Please login to your account
+                </h6>
+                <CForm @submit.prevent="loginSubmit">
+                  <div class="form-group">
+                    <label class="form-control-label text-muted"
+                      >Username</label
+                    >
+                    <input
+                      name="username"
+                      placeholder="phone number"
+                      class="form-control"
+                      v-model="username"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-control-label text-muted"
+                      >Password</label
+                    >
+                    <input
+                      type="password"
+                      name="password"
+                      placeholder="password"
+                      class="form-control"
+                      v-model="password"
+                    />
+                  </div>
+                  <div class="row justify-content-center my-3 px-3">
+                    <button type="submit" class="btn-block btn-color">
+                      Login
+                    </button>
+                  </div>
+                </CForm>
                 <div class="row justify-content-center my-2">
                   <a href="#"
                     ><small class="text-muted">Forgot Password?</small></a
                   >
                 </div>
               </div>
-            </div>
-            <div class="bottom text-center mb-5">
-              <p href="#" class="sm-text mx-auto mb-3">
-                Don't have an account?<button class="btn btn-white ml-2">
-                  Create new
-                </button>
-              </p>
             </div>
           </div>
           <div class="card card2">
@@ -74,13 +76,17 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "Login",
   data() {
     return {
       testCollection: [],
       id: "PzsfNYqxyeoi3klwJJMZ",
-      name: "madhan"
+      name: "madhan",
+      username: "",
+      password: ""
     };
   },
   mounted() {
@@ -96,6 +102,17 @@ export default {
       });
   },
   methods: {
+    ...mapActions(["showToast"]),
+    loginSubmit() {
+      if (this.username && this.password) {
+        console.log("asf");
+      } else {
+        this.showToast({
+          class: "bg-danger text-white",
+          message: "Please fill the credentials"
+        });
+      }
+    },
     createContact() {
       const db = this.$firebase.firestore();
       db.collection("users")
