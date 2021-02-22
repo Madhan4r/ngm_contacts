@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@coreui/coreui": "^3.4.0",
+    "@coreui/icons": "^1.0.1",
     "@coreui/vue": "^3.2.7",
     "core-js": "^3.6.5",
     "firebase": "^8.2.7",
