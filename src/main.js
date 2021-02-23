@@ -4,7 +4,12 @@ import router from "./router";
 import store from "./store";
 import CoreuiVue from "@coreui/vue";
 import { iconsSet as icons } from "./assets/icons/icons.js";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
+library.add(fas);
+Vue.component("fas-icon", FontAwesomeIcon);
 Vue.use(CoreuiVue);
 Vue.config.productionTip = false;
 
