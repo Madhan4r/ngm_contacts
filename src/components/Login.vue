@@ -1,6 +1,6 @@
 <template>
   <div class="login-style">
-    <div class="container px-4 py-5 mx-auto">
+    <div class="container px-4 py-3 mx-auto">
       <div class="card card0">
         <div class="d-flex flex-lg-row flex-column-reverse">
           <div class="card card1">
@@ -9,7 +9,7 @@
                 <div class="row justify-content-center px-3 mb-3">
                   <img id="logo" src="/img/ngm_logo.gif" alt="logo" />
                 </div>
-                <h3 class="mb-5 text-center heading">NGM CONTACTS</h3>
+                <h3 class="mb-5 text-center heading">NGM STAFF CONTACTS</h3>
                 <h6 class="msg-info text-center">
                   Please login to your account
                 </h6>
