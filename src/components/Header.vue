@@ -2,14 +2,12 @@
   <div>
     <CNavbar expandable="md" color="header" fixed="top">
       <CToggler in-navbar @click="collapsed = !collapsed" />
-      <CNavbarBrand @click="navigateTo('/home')"
-        >NGM STAFF CONTACTS</CNavbarBrand
-      >
+      <CNavbarBrand to="/home">NGM STAFF CONTACTS</CNavbarBrand>
       <CCollapse :show="collapsed" navbar>
         <CNavbarNav>
-          <CNavItem @click="navigateTo('/home')">Home</CNavItem>
-          <CNavItem @click="navigateTo('/home')">Academic</CNavItem>
-          <CNavItem @click="navigateTo('/home')">Non-Academic</CNavItem>
+          <CNavItem to="/home">Home</CNavItem>
+          <CNavItem to="/home">Academic</CNavItem>
+          <CNavItem to="/home">Non-Academic</CNavItem>
         </CNavbarNav>
 
         <!-- Right aligned nav items -->
@@ -29,12 +27,7 @@ export default {
   name: "Header",
   data: () => ({
     collapsed: false
-  }),
-  methods: {
-    navigateTo(path) {
-      this.$router.push(path);
-    }
-  }
+  })
 };
 </script>
 

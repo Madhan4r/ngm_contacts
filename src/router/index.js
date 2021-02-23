@@ -36,19 +36,19 @@ const router = new VueRouter({
   routes
 });
 
-// router.beforeEach((to, from, next) => {
-//   if (!localStorage.getItem("userData")) {
-//     if (!to.path.includes("/login")) {
-//       next("/login");
-//     }
-//   } else {
-//     next(); // make sure to always call next()!
-//   }
-//   if (to.path == "" || to.path == "/") {
-//     next("/login");
-//   } else {
-//     next();
-//   }
-// });
+router.beforeEach((to, from, next) => {
+  // if (!localStorage.getItem("userData")) {
+  //   if (!to.path.includes("/login")) {
+  //     next("/login");
+  //   }
+  // } else {
+  //   next(); // make sure to always call next()!
+  // }
+  if (to.path == "" || to.path == "/") {
+    next("/login");
+  } else {
+    next();
+  }
+});
 
 export default router;
