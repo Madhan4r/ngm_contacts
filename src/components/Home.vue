@@ -3,7 +3,7 @@
     <div class="home col-11 col-sm-9 p-0">
       <div class="container p-3 text-center">
         <img src="/img/ngm_logo.gif" alt="logo" width="100" height="100" />
-        <div class="d-flex justify-content-center px-5">
+        <div class="d-flex justify-content-center px-5 mb-3">
           <div class="search">
             <input
               type="text"
@@ -16,17 +16,26 @@
             </a>
           </div>
         </div>
+        <div class="container">
+          <CRow> <user-card :userDetail="getPrincipal[0]" /> </CRow>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import UserCard from "./UserCard";
 export default {
+  components: { UserCard },
   name: "Home",
   data: () => ({
     search: ""
-  })
+  }),
+  computed: {
+    ...mapGetters(["getPrincipal"])
+  }
 };
 </script>
 

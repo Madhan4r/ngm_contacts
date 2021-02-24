@@ -37,13 +37,13 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  // if (!localStorage.getItem("userData")) {
-  //   if (!to.path.includes("/login")) {
-  //     next("/login");
-  //   }
-  // } else {
-  //   next(); // make sure to always call next()!
-  // }
+  if (!localStorage.getItem("userEmail")) {
+    if (!to.path.includes("/login")) {
+      next("/login");
+    }
+  } else {
+    next();
+  }
   if (to.path == "" || to.path == "/") {
     next("/login");
   } else {

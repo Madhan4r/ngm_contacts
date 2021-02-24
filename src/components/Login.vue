@@ -76,7 +76,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Login",
@@ -85,6 +85,9 @@ export default {
       username: "",
       password: ""
     };
+  },
+  computed: {
+    ...mapGetters(["getUserEmail"])
   },
   methods: {
     ...mapActions(["showToast", "login"]),
@@ -166,6 +169,11 @@ export default {
     //       });
     //     });
     // },
+  },
+  mounted() {
+    if (this.getUserEmail) {
+      this.$router.push("/home");
+    }
   }
 };
 </script>

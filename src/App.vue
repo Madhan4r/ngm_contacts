@@ -22,7 +22,7 @@ export default {
 @import "assets/scss/custom";
 
 #app {
-  margin-top: 53px;
+  margin-top: 60px;
   margin-bottom: 30px;
 }
 </style>

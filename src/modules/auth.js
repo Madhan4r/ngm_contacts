@@ -2,11 +2,13 @@ import firebase from "firebase/app";
 import router from "../router";
 
 const state = {
-  userEmail: ""
+  userEmail: JSON.parse(localStorage.getItem("userEmail")) || "",
+  userData: []
 };
 
 const getters = {
-  getUserEmail: state => state.userEmail
+  getUserEmail: state => state.userEmail,
+  getUserData: state => state.userData
 };
 
 const actions = {
@@ -23,7 +25,7 @@ const actions = {
       .then(
         res => {
           let { user } = res;
-          localStorage.setItem("userEmail", user.email);
+          localStorage.setItem("userEmail", JSON.stringify(user.email));
           commit("SET_USER_EMAIL", user.email);
           dispatch("showToast", {
             class: "bg-success text-white",
@@ -44,27 +46,50 @@ const actions = {
   },
   logout({ dispatch, commit }) {
     localStorage.removeItem("userEmail");
+    localStorage.removeItem("departments");
+    localStorage.removeItem("users");
     router.push("/login");
     dispatch("showToast", {
       class: "bg-success text-white",
       message: "Logged Out"
     });
     commit("SET_USER_EMAIL", "");
+    commit("RESET_USER_DATA");
+    commit("RESET_NON_ACADEMIC_DEPARTMENTS");
+    commit("RESET_ACADEMIC_DEPARTMENTS");
+    commit("RESET_USERS");
   },
-  initialFetchAfterLogin({ dispatch, getters }) {
+  initialFetchAfterLogin({ dispatch, getters, commit }) {
     let { getUserByEmail, getUserEmail } = getters;
     let appendAction = [];
     appendAction = [...appendAction, dispatch("getAllDatabase")];
     return Promise.all(appendAction).then(res => {
-      console.log(getUserByEmail(getUserEmail));
+      let userData = getUserByEmail(getUserEmail);
+      commit("SET_USER_DATA", userData?.length ? userData[0] : []);
       return res;
     });
+  },
+  initialOfflineMode({ getters, commit, dispatch }) {
+    let { getUserByEmail, getUserEmail } = getters;
+    let userData = getUserByEmail(getUserEmail);
+    if (userData?.length) {
+      commit("SET_USER_DATA", userData[0]);
+      dispatch("initialFetchAfterLogin");
+    } else {
+      router.push("/login");
+    }
   }
 };
 
 const mutations = {
   ["SET_USER_EMAIL"](state, payload) {
     state.userEmail = payload;
+  },
+  ["SET_USER_DATA"](state, payload) {
+    state.userData = payload;
+  },
+  ["RESET_USER_DATA"](state) {
+    state.userData = [];
   }
 };
 

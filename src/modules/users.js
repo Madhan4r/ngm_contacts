@@ -1,9 +1,9 @@
 import firebase from "firebase/app";
 
 const state = {
-  users: [],
-  academic: [],
-  non_academic: []
+  users: JSON.parse(localStorage.getItem("users")) || [],
+  academic: JSON.parse(localStorage.getItem("users"))?.academic || [],
+  non_academic: JSON.parse(localStorage.getItem("users"))?.non_academic || []
 };
 
 const getters = {
@@ -14,6 +14,13 @@ const getters = {
     return state.users?.length
       ? state.users.filter(val => {
           return val.email == email;
+        })
+      : [];
+  },
+  getPrincipal: state => {
+    return state.users?.length
+      ? state.users.filter(val => {
+          return val.staff_role == "principal";
         })
       : [];
   }
@@ -35,11 +42,13 @@ const actions = {
       .collection("users")
       .get()
       .then(res => {
-        const data = [];
+        let data = [];
         res.forEach(doc => {
-          data.push({ [doc.id]: doc.data() });
+          let temp = { ...doc.data(), id: doc.id };
+          data.push(temp);
         });
         commit("SET_USERS", data);
+        localStorage.setItem("users", JSON.stringify(data));
       })
       .catch(err => {
         console.log("error while fetching users", err);
@@ -55,9 +64,10 @@ const actions = {
       .collection("academic")
       .get()
       .then(res => {
-        const data = [];
+        let data = [];
         res.forEach(doc => {
-          data.push({ [doc.id]: doc.data() });
+          let temp = { ...doc.data(), id: doc.id };
+          data.push(temp);
         });
         commit("SET_ACADEMIC_DEPARTMENTS", data);
       })
@@ -75,9 +85,10 @@ const actions = {
       .collection("non_academic")
       .get()
       .then(res => {
-        const data = [];
+        let data = [];
         res.forEach(doc => {
-          data.push({ [doc.id]: doc.data() });
+          let temp = { ...doc.data(), id: doc.id };
+          data.push(temp);
         });
         commit("SET_NON_ACADEMIC_DEPARTMENTS", data);
       })
@@ -99,12 +110,20 @@ const mutations = {
   },
   ["SET_ACADEMIC_DEPARTMENTS"](state, payload) {
     state.academic = payload;
+    localStorage.setItem(
+      "departments",
+      JSON.stringify({ academic: payload, non_academic: state.non_academic })
+    );
   },
   ["RESET_ACADEMIC_DEPARTMENTS"](state) {
     state.academic = [];
   },
   ["SET_NON_ACADEMIC_DEPARTMENTS"](state, payload) {
     state.academic = payload;
+    localStorage.setItem(
+      "departments",
+      JSON.stringify({ non_academic: payload, academic: state.academic })
+    );
   },
   ["RESET_NON_ACADEMIC_DEPARTMENTS"](state) {
     state.academic = [];
