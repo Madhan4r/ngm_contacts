@@ -1,7 +1,7 @@
 <template>
   <div>
     <CNavbar expandable="md" color="header" fixed="top">
-      <CToggler in-navbar @click="collapsed = !collapsed" />
+      <CToggler in-navbar @click="collapsed = !collapsed" v-if="getUserEmail" />
       <CNavbarBrand to="/home">NGM STAFF CONTACTS</CNavbarBrand>
       <CCollapse :show="collapsed" navbar v-if="getUserEmail">
         <CNavbarNav>
@@ -12,9 +12,13 @@
 
         <!-- Right aligned nav items -->
         <CNavbarNav class="ml-auto">
-          <CDropdown nav togglerText="User" placement="bottom-end">
+          <CDropdown
+            nav
+            :togglerText="'Hi ' + getUserName"
+            placement="bottom-end"
+          >
             <CDropdownItem>Edit Profile</CDropdownItem>
-            <CDropdownItem>Logout</CDropdownItem>
+            <CDropdownItem @click="clearLocalStorage()">Logout</CDropdownItem>
           </CDropdown>
         </CNavbarNav>
       </CCollapse>
@@ -23,7 +27,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Header",
@@ -31,7 +35,19 @@ export default {
     collapsed: false
   }),
   computed: {
-    ...mapGetters(["getUserEmail"])
+    ...mapGetters(["getUserEmail", "getUserData"]),
+    getUserName() {
+      return this.getUserData?.first_name || "";
+    }
+  },
+  methods: {
+    ...mapActions(["initialOfflineMode", "logout"]),
+    clearLocalStorage() {
+      this.logout();
+    }
+  },
+  created() {
+    this.initialOfflineMode();
   }
 };
 </script>

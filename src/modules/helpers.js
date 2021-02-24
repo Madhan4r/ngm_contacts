@@ -11,3 +11,15 @@ export function createUUID() {
   var uuid = s.join("");
   return uuid;
 }
+
+export function deepClone(obj) {
+  return JSON.parse(JSON.stringify({ ...obj }));
+}
+
+export function isObject(a) {
+  return !!a && a.constructor === Object;
+}
+
+export function isEmptyObjectCheck(obj) {
+  return Object.keys(obj).length === 0 && obj.constructor === Object;
+}
