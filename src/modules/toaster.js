@@ -19,7 +19,7 @@ const actions = {
   showToast({ commit, dispatch }, payload) {
     let id = createUUID();
     payload["id"] = id;
-    let autohide = payload["autohide"] || 5000;
+    let autoHide = payload["autoHide"] || 5000;
     if (!payload["class"]) {
       payload["class"] = "bg-info text-white";
     }
@@ -30,7 +30,7 @@ const actions = {
 
     setTimeout(() => {
       dispatch("removeToastBasedOnId", id);
-    }, autohide);
+    }, autoHide);
   },
   removeToastBasedOnId({ commit, getters }, removeId) {
     let { getToasters } = getters;

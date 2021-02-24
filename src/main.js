@@ -7,10 +7,12 @@ import { iconsSet as icons } from "./assets/icons/icons.js";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import SkeletonCards from "vue-ultimate-skeleton-cards";
 
 library.add(fas);
 Vue.component("fas-icon", FontAwesomeIcon);
 Vue.use(CoreuiVue);
+Vue.use(SkeletonCards);
 Vue.config.productionTip = false;
 
 /* Import the firebase SDK and extend with firestore */
