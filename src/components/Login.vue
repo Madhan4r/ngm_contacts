@@ -20,7 +20,7 @@
                     >
                     <input
                       name="username"
-                      placeholder="phone number"
+                      placeholder="Email"
                       class="form-control"
                       v-model="username"
                     />
@@ -32,7 +32,7 @@
                     <input
                       type="password"
                       name="password"
-                      placeholder="password"
+                      placeholder="Password"
                       class="form-control"
                       v-model="password"
                     />
@@ -86,18 +86,6 @@ export default {
       password: ""
     };
   },
-  // mounted() {
-  //   const db = this.$firebase.firestore();
-  //   db.collection("users")
-  //     .get()
-  //     .then((snap) => {
-  //       const testCollection = [];
-  //       snap.forEach((doc) => {
-  //         testCollection.push({ [doc.id]: doc.data() });
-  //       });
-  //       this.testCollection = testCollection;
-  //     });
-  // },
   methods: {
     ...mapActions(["showToast", "login"]),
     loginSubmit() {

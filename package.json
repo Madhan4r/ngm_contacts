@@ -18,6 +18,7 @@
     "firebase": "^8.2.7",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
+    "vue-ultimate-skeleton-cards": "^1.0.3",
     "vuex": "^3.4.0"
   },
   "devDependencies": {

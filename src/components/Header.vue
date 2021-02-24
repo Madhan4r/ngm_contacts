@@ -3,7 +3,7 @@
     <CNavbar expandable="md" color="header" fixed="top">
       <CToggler in-navbar @click="collapsed = !collapsed" />
       <CNavbarBrand to="/home">NGM STAFF CONTACTS</CNavbarBrand>
-      <CCollapse :show="collapsed" navbar>
+      <CCollapse :show="collapsed" navbar v-if="getUserEmail">
         <CNavbarNav>
           <CNavItem to="/home">Home</CNavItem>
           <CNavItem to="/home">Academic</CNavItem>
@@ -23,11 +23,16 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "Header",
   data: () => ({
     collapsed: false
-  })
+  }),
+  computed: {
+    ...mapGetters(["getUserEmail"])
+  }
 };
 </script>
 
