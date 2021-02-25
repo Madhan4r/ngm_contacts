@@ -6,8 +6,8 @@
       <CCollapse :show="collapsed" navbar v-if="getUserEmail">
         <CNavbarNav>
           <CNavItem to="/home">Home</CNavItem>
-          <CNavItem to="/home">Academic</CNavItem>
-          <CNavItem to="/home">Non-Academic</CNavItem>
+          <CNavItem to="/academic">Academic</CNavItem>
+          <CNavItem to="/non-academic">Non-Academic</CNavItem>
         </CNavbarNav>
 
         <!-- Right aligned nav items -->
@@ -18,21 +18,34 @@
             placement="bottom-end"
           >
             <CDropdownItem>Edit Profile</CDropdownItem>
+            <CDropdownItem @click="changePassword()"
+              >Change Password</CDropdownItem
+            >
             <CDropdownItem @click="clearLocalStorage()">Logout</CDropdownItem>
           </CDropdown>
         </CNavbarNav>
       </CCollapse>
     </CNavbar>
+    <change-password-modal
+      v-if="isShowPasswordModal"
+      :isShowPopup="isShowPasswordModal"
+      @modalCallBack="modalCallBack()"
+    />
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import ChangePasswordModal from "./ChangePasswordModal.vue";
 
 export default {
   name: "Header",
+  components: {
+    ChangePasswordModal
+  },
   data: () => ({
-    collapsed: false
+    collapsed: false,
+    isShowPasswordModal: false
   }),
   computed: {
     ...mapGetters(["getUserEmail", "getUserData"]),
@@ -44,6 +57,12 @@ export default {
     ...mapActions(["initialOfflineMode", "logout"]),
     clearLocalStorage() {
       this.logout();
+    },
+    changePassword() {
+      this.isShowPasswordModal = true;
+    },
+    modalCallBack() {
+      this.isShowPasswordModal = false;
     }
   },
   created() {

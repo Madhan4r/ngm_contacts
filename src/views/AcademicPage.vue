@@ -1,9 +1,16 @@
 <template>
-  <div></div>
+  <div>
+    <academic />
+  </div>
 </template>
 
 <script>
+import Academic from "@/components/Academic.vue";
+
 export default {
-  name: "AcademicPage"
+  name: "AcademicPage",
+  components: {
+    Academic
+  }
 };
 </script>

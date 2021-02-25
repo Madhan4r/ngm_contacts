@@ -8,7 +8,10 @@ const state = {
 
 const getters = {
   getUserEmail: state => state.userEmail,
-  getUserData: state => state.userData
+  getUserData: state => state.userData,
+  getScreen() {
+    return screen;
+  }
 };
 
 const actions = {
@@ -79,6 +82,41 @@ const actions = {
       })
       .finally(res => {
         return res;
+      });
+  },
+  changePassword({ getters, dispatch }, payload) {
+    const { getUserEmail } = getters;
+    firebase.auth().signOut();
+    return firebase
+      .auth()
+      .signInWithEmailAndPassword(getUserEmail, payload.oldPwd)
+      .then(() => {
+        let user = firebase.auth().currentUser;
+        return user
+          .updatePassword(payload.newPwd)
+          .then(() => {
+            dispatch("showToast", {
+              class: "bg-success text-white",
+              message: "Password changes successfully!"
+            });
+            return true;
+          })
+          .catch(err => {
+            dispatch("showToast", {
+              class: "bg-danger text-white",
+              message: "Error whole updating!"
+            });
+            console.log(err);
+            return false;
+          });
+      })
+      .catch(err => {
+        dispatch("showToast", {
+          class: "bg-danger text-white",
+          message: "Your old password was incorrect!"
+        });
+        console.log(err);
+        return false;
       });
   },
   initialFetchAfterLogin({ dispatch, getters, commit }) {
