@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import LoginPage from "../views/LoginPage";
+import ForgotPage from "../views/ForgotPage";
 import HomePage from "../views/HomePage";
 import AcademicPage from "../views/AcademicPage";
 import NonAcademicPage from "../views/NonAcademicPage";
@@ -12,6 +13,11 @@ const routes = [
     path: "/login",
     name: "Login Page",
     component: LoginPage
+  },
+  {
+    path: "/forgot",
+    name: "Forgot Page",
+    component: ForgotPage
   },
   {
     path: "/home",
@@ -38,7 +44,9 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (!localStorage.getItem("userEmail")) {
-    if (!to.path.includes("/login")) {
+    if (to.path.includes("/login") || to.path.includes("/forgot")) {
+      next();
+    } else {
       next("/login");
     }
   } else {
