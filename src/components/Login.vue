@@ -44,7 +44,7 @@
                   </div>
                 </CForm>
                 <div class="row justify-content-center my-2">
-                  <a href="#"
+                  <a @click="navigateToForgot()" style="cursor: pointer"
                     ><small class="text-muted">Forgot Password?</small></a
                   >
                 </div>
@@ -103,6 +103,9 @@ export default {
           message: "Please fill the credentials"
         });
       }
+    },
+    navigateToForgot() {
+      this.$router.push("/forgot");
     }
     // createContact() {
     //   const db = this.$firebase.firestore();
@@ -142,31 +145,6 @@ export default {
     //     })
     //     .catch((error) => {
     //       console.error("Error removing document: ", error);
-    //     });
-    // },
-    // getContactByField() {
-    //   const db = this.$firebase.firestore();
-    //   db.collection("users")
-    //     .where("name", "==", this.name)
-    //     .get()
-    //     .then((querySnapshot) => {
-    //       querySnapshot.forEach((doc) => {
-    //         console.log(doc.id, " => ", doc.data());
-    //         this.name = doc.data().name;
-    //         this.phno = doc.data().phno;
-    //       });
-    //     });
-    // },
-    // getContactById() {
-    //   const db = this.$firebase.firestore();
-    //   db.collection("users")
-    //     .get()
-    //     .then((querySnapshot) => {
-    //       querySnapshot.forEach((doc) => {
-    //         if (doc.id == this.id) {
-    //           console.log(doc.id, " =>  founded : ", doc.data());
-    //         }
-    //       });
     //     });
     // },
   },

@@ -59,6 +59,28 @@ const actions = {
     commit("RESET_ACADEMIC_DEPARTMENTS");
     commit("RESET_USERS");
   },
+  resetPassword({ dispatch }, email) {
+    return firebase
+      .auth()
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        dispatch("showToast", {
+          class: "bg-success text-white",
+          message: "Mail Sent! Please check your mail!"
+        });
+        router.push("/login");
+      })
+      .catch(err => {
+        dispatch("showToast", {
+          class: "bg-danger text-white",
+          message: "No User Found!"
+        });
+        console.log("error while reseting password", err);
+      })
+      .finally(res => {
+        return res;
+      });
+  },
   initialFetchAfterLogin({ dispatch, getters, commit }) {
     let { getUserByEmail, getUserEmail } = getters;
     let appendAction = [];
@@ -75,8 +97,6 @@ const actions = {
     if (userData?.length) {
       commit("SET_USER_DATA", userData[0]);
       dispatch("initialFetchAfterLogin");
-    } else {
-      router.push("/login");
     }
   }
 };
