@@ -1,5 +1,7 @@
 # ngm_contacts
 
+NGM Contacts url: "https://ngm4contacts.web.app/"
+
 ## Project setup
 ```
 npm install
