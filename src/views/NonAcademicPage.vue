@@ -1,9 +1,14 @@
 <template>
-  <div></div>
+  <div>
+    <non-academic />
+  </div>
 </template>
 
 <script>
+import NonAcademic from "../components/NonAcademic.vue";
+
 export default {
-  name: "NonAcademicPage"
+  name: "NonAcademicPage",
+  components: { NonAcademic }
 };
 </script>

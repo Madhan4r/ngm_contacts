@@ -16,9 +16,9 @@
     "@fortawesome/vue-fontawesome": "^2.0.2",
     "core-js": "^3.6.5",
     "firebase": "^8.2.7",
+    "vee-validate": "^3.4.5",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
-    "vue-ultimate-skeleton-cards": "^1.0.3",
     "vuex": "^3.4.0"
   },
   "devDependencies": {

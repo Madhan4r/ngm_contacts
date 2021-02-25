@@ -7,12 +7,13 @@ import { iconsSet as icons } from "./assets/icons/icons.js";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import SkeletonCards from "vue-ultimate-skeleton-cards";
+import { ValidationProvider, ValidationObserver, extend } from "vee-validate";
 
 library.add(fas);
 Vue.component("fas-icon", FontAwesomeIcon);
+Vue.component("ValidationObserver", ValidationObserver);
+Vue.component("ValidationProvider", ValidationProvider);
 Vue.use(CoreuiVue);
-Vue.use(SkeletonCards);
 Vue.config.productionTip = false;
 
 /* Import the firebase SDK and extend with firestore */
@@ -36,6 +37,23 @@ firebase.initializeApp(firebaseConfig);
 
 /* Bind firebase to your Vue instance */
 Vue.prototype.$firebase = firebase;
+
+extend("required", {
+  validate(value) {
+    let isValid;
+    if (Array.isArray(value)) {
+      isValid = value.length > 0;
+    } else {
+      isValid = ["", null, undefined].indexOf(value) === -1;
+    }
+    return {
+      required: true,
+      valid: isValid
+    };
+  },
+  message: "This field is required",
+  computesRequired: true
+});
 
 new Vue({
   router,
