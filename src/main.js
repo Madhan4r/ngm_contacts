@@ -8,11 +8,14 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { ValidationProvider, ValidationObserver, extend } from "vee-validate";
+import moment from "moment";
+import vSelect from "vue-select";
 
 library.add(fas);
 Vue.component("fas-icon", FontAwesomeIcon);
 Vue.component("ValidationObserver", ValidationObserver);
 Vue.component("ValidationProvider", ValidationProvider);
+Vue.component("v-select", vSelect);
 Vue.use(CoreuiVue);
 Vue.config.productionTip = false;
 
@@ -37,6 +40,7 @@ firebase.initializeApp(firebaseConfig);
 
 /* Bind firebase to your Vue instance */
 Vue.prototype.$firebase = firebase;
+Vue.prototype.$moment = moment;
 
 extend("required", {
   validate(value) {

@@ -3,7 +3,7 @@
     class="d-flex flex-column"
     :style="`min-height: ${getScreen.availHeight - 170}px`"
   >
-    <div class="academic col-11 col-sm-9 p-0"></div>
+    <div class="box-container col-11 col-sm-9 p-0"></div>
   </div>
 </template>
 
@@ -17,11 +17,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.academic {
-  border: 1px solid #d8dbe0;
-  margin: auto;
-  background-color: #fff;
-}
-</style>

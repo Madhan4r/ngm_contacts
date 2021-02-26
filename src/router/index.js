@@ -5,6 +5,7 @@ import ForgotPage from "../views/ForgotPage";
 import HomePage from "../views/HomePage";
 import AcademicPage from "../views/AcademicPage";
 import NonAcademicPage from "../views/NonAcademicPage";
+import EditProfilePage from "../views/EditProfilePage";
 
 Vue.use(VueRouter);
 
@@ -33,6 +34,11 @@ const routes = [
     path: "/non-academic",
     name: "Non Academic Page",
     component: NonAcademicPage
+  },
+  {
+    path: "/edit-profile",
+    name: "Edit Profile Page",
+    component: EditProfilePage
   }
 ];
 

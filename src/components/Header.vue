@@ -17,7 +17,7 @@
             :togglerText="'Hi ' + getUserName"
             placement="bottom-end"
           >
-            <CDropdownItem>Edit Profile</CDropdownItem>
+            <CDropdownItem @click="editProfile()">Edit Profile</CDropdownItem>
             <CDropdownItem @click="changePassword()"
               >Change Password</CDropdownItem
             >
@@ -63,10 +63,18 @@ export default {
     },
     modalCallBack() {
       this.isShowPasswordModal = false;
+    },
+    editProfile() {
+      this.$router.push("/edit-profile");
     }
   },
   created() {
     this.initialOfflineMode();
+  },
+  watch: {
+    "$route.name"() {
+      this.collapsed = false;
+    }
   }
 };
 </script>
