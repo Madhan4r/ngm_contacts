@@ -118,22 +118,6 @@ export default {
     //       console.error("Error writing document: ", error);
     //     });
     // },
-    // updateContact() {
-    //   const db = this.$firebase.firestore();
-    //   let id = this.id;
-    //   db.collection("users")
-    //     .doc(id)
-    //     .update({
-    //       name: "name",
-    //       phno: 123456789,
-    //     })
-    //     .then(() => {
-    //       console.log("Document successfully updated!");
-    //     })
-    //     .catch((error) => {
-    //       console.error("Error updating document: ", error);
-    //     });
-    // },
     // deleteContact() {
     //   const db = this.$firebase.firestore();
     //   let id = this.id;

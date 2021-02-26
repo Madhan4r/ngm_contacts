@@ -34,8 +34,10 @@
               ></fas-icon>
             </a>
           </div>
-          <div class="col-auto">
-            <a href="https://api.whatsapp.com/send?phone=+*918883997203*">
+          <div class="col-auto" v-if="getWhatsapp">
+            <a
+              :href="`https://api.whatsapp.com/send?phone=+*91${getWhatsapp}*`"
+            >
               <svg
                 enable-background="new 0 0 24 24"
                 height="18"
@@ -73,6 +75,8 @@
 </template>
 
 <script>
+import moment from "moment";
+
 export default {
   name: "UserCard",
   props: ["userDetail"],
@@ -89,16 +93,17 @@ export default {
       return this.userDetail?.gender;
     },
     getDOB() {
-      let date = this.userDetail?.dob ? new Date(this.userDetail?.dob) : "";
-      return date
-        ? `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
-        : "";
+      let date = this.userDetail?.dob;
+      return date ? moment(date).format("DD MMM YYYY") : "";
     },
     getDept() {
       return this.userDetail?.dept || "";
     },
     getPhone() {
       return this.userDetail?.phone_no || "";
+    },
+    getWhatsapp() {
+      return this.userDetail?.whatsapp || "";
     }
   },
   methods: {
@@ -108,7 +113,7 @@ export default {
       });
     },
     openMail() {
-      window.location.href = "mailto:user@example.com";
+      window.location.href = `mailto:${this.userDetail?.email}`;
     }
   }
 };

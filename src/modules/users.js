@@ -99,6 +99,41 @@ const actions = {
       .finally(res => {
         return res;
       });
+  },
+  updateUser({ dispatch }, data) {
+    const db = firebase.firestore();
+    let { payload, id } = data;
+    return db
+      .collection("users")
+      .doc(id)
+      .update(payload)
+      .then(() => {
+        dispatch("showToast", {
+          class: "bg-success text-white",
+          message: "Profile updated!"
+        });
+        dispatch("updateUsersData");
+        return true;
+      })
+      .catch(error => {
+        dispatch("showToast", {
+          class: "bg-danger text-white",
+          message: "error while updating profile!"
+        });
+        console.error("Error updating profile", error);
+        return error;
+      });
+  },
+  updateUsersData({ commit, getters, dispatch }) {
+    let { getUserByEmail, getUserEmail } = getters;
+    let appendAction = [];
+    appendAction.push(dispatch("getAllUsers"));
+    Promise.all(appendAction).then(() => {
+      let userData = getUserByEmail(getUserEmail);
+      if (userData?.length) {
+        commit("SET_USER_DATA", userData[0]);
+      }
+    });
   }
 };
 const mutations = {
