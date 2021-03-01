@@ -15,9 +15,12 @@ const getters = {
   },
   getPrincipal: state => {
     return state.users?.length
-      ? state.users.filter(val => {
-          return val.staff_role == "principal";
-        })
+      ? state.users.filter(val => val.staff_role == "principal")
+      : [];
+  },
+  getUsersByReference: state => reference => {
+    return state.users?.length
+      ? state.users.filter(val => val.reference == reference)
       : [];
   }
 };
