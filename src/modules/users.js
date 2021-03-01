@@ -23,18 +23,7 @@ const getters = {
 };
 
 const actions = {
-  getAllDatabase({ dispatch }) {
-    let appendAction = [];
-    dispatch("showLoader");
-    appendAction = [...appendAction, dispatch("getAllUsers")];
-    appendAction = [...appendAction, dispatch("getAcademicDept")];
-    appendAction = [...appendAction, dispatch("getNonAcademicDept")];
-    return Promise.all(appendAction).then(res => {
-      dispatch("hideLoader");
-      return res;
-    });
-  },
-  getAllUsers({ commit }) {
+  fetchAllUsers({ commit }) {
     const db = firebase.firestore();
     return db
       .collection("users")
