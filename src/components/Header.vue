@@ -54,7 +54,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["initialOfflineMode", "logout"]),
+    ...mapActions(["initialFetchAfterLogin", "logout"]),
     clearLocalStorage() {
       this.logout();
     },
@@ -69,7 +69,7 @@ export default {
     }
   },
   created() {
-    this.initialOfflineMode();
+    this.initialFetchAfterLogin();
   },
   watch: {
     "$route.name"() {

@@ -88,7 +88,9 @@
                                   <CRow>
                                     <CCol md="6">
                                       <div class="form-group">
-                                        <label>First Name</label>
+                                        <label class="required"
+                                          >First Name</label
+                                        >
                                         <ValidationProvider
                                           rules="required|alpha_spaces"
                                           v-slot="{ errors }"
@@ -111,7 +113,9 @@
                                     </CCol>
                                     <CCol md="6">
                                       <div class="form-group">
-                                        <label>Last Name</label>
+                                        <label class="required"
+                                          >Last Name</label
+                                        >
                                         <ValidationProvider
                                           rules="required|alpha_spaces"
                                           v-slot="{ errors }"
@@ -136,7 +140,7 @@
                                   <CRow>
                                     <CCol>
                                       <div class="form-group">
-                                        <label>Email</label>
+                                        <label class="required">Email</label>
                                         <input
                                           class="form-control"
                                           type="text"
@@ -171,7 +175,7 @@
                                     </CCol>
                                     <CCol md="6">
                                       <div class="form-group">
-                                        <label>Gender</label>
+                                        <label class="required">Gender</label>
                                         <Select
                                           name="gender"
                                           :value="profile.gender"
@@ -191,7 +195,7 @@
                                   <CRow>
                                     <CCol md="6">
                                       <div class="form-group">
-                                        <label>Phone</label>
+                                        <label class="required">Phone</label>
                                         <ValidationProvider
                                           ref="phone"
                                           :rules="{

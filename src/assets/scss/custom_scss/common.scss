@@ -6,3 +6,21 @@
 .has-error {
   color: red;
 }
+.required:after {
+  content:" *";
+  color: red;
+}
+.btn-dept-color {
+  color: #fff;
+  padding: 10px;
+  cursor: pointer;
+  border: none !important;
+  margin-top: 15px;
+  font-weight: 600;
+  min-width: 200px;
+  max-width: 200px;
+}
+.btn-dept-color:hover {
+  color: #fff;
+  background-image: linear-gradient(to right, #d500f9, #ffd54f);
+}
