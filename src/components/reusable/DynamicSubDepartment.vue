@@ -17,7 +17,11 @@
           <CButton
             class="btn-sub-dept-color"
             :style="`background-color:${getRandomColor}`"
-            @click="navigateTo(`/dynamic-sub-dept/academic/${data.id}`)"
+            @click="
+              navigateTo(
+                `/list-users/${mainDepartment}/${subDepartment}/${data.id}`
+              )
+            "
             >{{ data.id | formatDepartment }}</CButton
           >
         </CCol>
@@ -35,7 +39,7 @@
           <CButton
             class="btn-dept-color"
             :style="`background-color:${getRandomColor}`"
-            @click="createSubDept()"
+            @click="addUser()"
             >+ USER</CButton
           >
         </CCol>
@@ -44,7 +48,13 @@
     <add-department
       v-if="showAddDepartmentModal"
       :isShowPopup="showAddDepartmentModal"
-      @modalCallBack="addmodalCallBack"
+      @modalCallBack="addDepartmentCallBack"
+      :existingDepartments="getSubDepartment"
+    />
+    <add-modify-user
+      v-if="addModifyUserModal"
+      :isShowPopup="addModifyUserModal"
+      @modalCallBack="addUserCallBack"
       :existingDepartments="getSubDepartment"
     />
   </div>
@@ -59,7 +69,8 @@ export default {
   data: () => ({
     mainDepartment: "",
     subDepartment: "",
-    showAddDepartmentModal: false
+    showAddDepartmentModal: false,
+    addModifyUserModal: false
   }),
   computed: {
     ...mapGetters([
@@ -74,7 +85,7 @@ export default {
     createSubDept() {
       this.showAddDepartmentModal = true;
     },
-    addmodalCallBack(action, value) {
+    addDepartmentCallBack(action, value) {
       if (action) {
         this.createSubDepartment({
           mainCollection: this.mainDepartment,
@@ -84,7 +95,15 @@ export default {
       }
       this.showAddDepartmentModal = false;
     },
-    navigateTo() {}
+    navigateTo(path) {
+      this.$router.push(path);
+    },
+    addUser() {
+      this.addModifyUserModal = true;
+    },
+    addUserCallBack(action, value) {
+      console.log(action, value);
+    }
   },
   filters: {
     formatDepartment(value) {
@@ -93,11 +112,11 @@ export default {
   },
   mounted() {
     const {
-      params: { mainDept, dept }
+      params: { mainDept, subDept }
     } = this.$route;
     this.mainDepartment = mainDept;
-    this.subDepartment = dept;
-    this.fetchSubDepartment(`${mainDept}/${dept}/${dept}`);
+    this.subDepartment = subDept;
+    this.fetchSubDepartment(`${mainDept}/${subDept}/${subDept}`);
   }
 };
 </script>

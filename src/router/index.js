@@ -7,6 +7,7 @@ import AcademicPage from "../views/AcademicPage";
 import NonAcademicPage from "../views/NonAcademicPage";
 import EditProfilePage from "../views/EditProfilePage";
 import DynamicSubDepartment from "@/components/reusable/DynamicSubDepartment";
+import ListUsers from "@/components/reusable/ListUsers";
 
 Vue.use(VueRouter);
 
@@ -42,9 +43,14 @@ const routes = [
     component: EditProfilePage
   },
   {
-    path: "/dynamic-sub-dept/:mainDept/:dept",
+    path: "/dynamic-sub-dept/:mainDept/:subDept",
     name: "Dynamic Sub Department",
     component: DynamicSubDepartment
+  },
+  {
+    path: "/list-users/:mainDept/:subDept/:dept",
+    name: "Dynamic List Users",
+    component: ListUsers
   }
 ];
 

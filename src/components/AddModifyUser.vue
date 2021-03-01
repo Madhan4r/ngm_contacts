@@ -143,7 +143,7 @@
                         :rules="{
                           required: true,
                           numeric: true,
-                          length: 10,
+                          length: 10
                         }"
                         v-slot="{ errors }"
                       >
@@ -166,7 +166,7 @@
                         ref="phone"
                         :rules="{
                           numeric: true,
-                          length: 10,
+                          length: 10
                         }"
                         v-slot="{ errors }"
                       >
@@ -231,7 +231,7 @@ import {
   alpha_spaces,
   required,
   numeric,
-  length,
+  length
 } from "vee-validate/dist/rules";
 import moment from "moment";
 
@@ -240,9 +240,9 @@ extend("numeric", { ...numeric, message: "Only numbers are allowed" });
 extend("length", { ...length, message: "Number should 10 digits" });
 extend("alpha_spaces", {
   ...alpha_spaces,
-  message: "Only Alphabets are allowed",
+  message: "Only Alphabets are allowed"
 });
-extend("no_future_date", (value) => {
+extend("no_future_date", value => {
   let input_date = new Date(value);
   let today_date = new Date();
   if (input_date > today_date) {
@@ -250,7 +250,7 @@ extend("no_future_date", (value) => {
   }
   return true;
 });
-extend("date_validate", (value) => {
+extend("date_validate", value => {
   if (moment(value).isValid()) {
     return true;
   }
@@ -261,10 +261,10 @@ export default {
   name: "AddModifyUser",
   props: ["isShowPopup", "userDetail"],
   components: {
-    Select,
+    Select
   },
   data: () => ({
-    profile: {},
+    profile: {}
   }),
   computed: {
     isFetching() {
@@ -278,10 +278,10 @@ export default {
         gender: [
           { label: "Male", code: "male" },
           { label: "Female", code: "female" },
-          { label: "Others", code: "others" },
-        ],
+          { label: "Others", code: "others" }
+        ]
       };
-    },
+    }
   },
   methods: {
     setUserData(data) {
@@ -291,14 +291,14 @@ export default {
         gender: profileData?.gender
           ? {
               label: this.toTitleCase(profileData?.gender),
-              code: profileData?.gender,
+              code: profileData?.gender
             }
           : [],
-        staff_role: this.toTitleCase(profileData?.staff_role),
+        staff_role: this.toTitleCase(profileData?.staff_role)
       };
     },
     toTitleCase(str) {
-      return str?.replace(/\w\S*/g, function (txt) {
+      return str?.replace(/\w\S*/g, function(txt) {
         return txt?.charAt(0).toUpperCase() + txt?.substr(1).toLowerCase();
       });
     },
@@ -313,7 +313,7 @@ export default {
       if (cnfm) {
         console.log("confirm");
       }
-    },
-  },
+    }
+  }
 };
 </script>
