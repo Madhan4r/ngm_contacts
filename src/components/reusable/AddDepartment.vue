@@ -25,7 +25,7 @@
             v-on:keypress.enter.prevent
           >
             <CRow class="m-3">
-              <label class="required" style="width: 30%">Department Name</label>
+              <label class="required" style="width: 30%">Department</label>
               <ValidationProvider
                 rules="required|alpha_spaces"
                 v-slot="{ errors }"

@@ -2,16 +2,18 @@ import firebase from "firebase/app";
 
 const state = {
   academic: [],
-  non_academic: []
+  non_academic: [],
+  subDepartment: []
 };
 
 const getters = {
   getAcademicDept: state => state.academic,
-  getNonAcademicDept: state => state.non_academic
+  getNonAcademicDept: state => state.non_academic,
+  getSubDepartment: state => state.subDepartment
 };
 
 const actions = {
-  getAcademicDept({ commit }) {
+  fetchAcademicDept({ commit }) {
     const db = firebase.firestore();
     return db
       .collection("academic")
@@ -32,7 +34,7 @@ const actions = {
         return res;
       });
   },
-  getNonAcademicDept({ commit }) {
+  fetchNonAcademicDept({ commit }) {
     const db = firebase.firestore();
     return db
       .collection("non_academic")
@@ -50,6 +52,29 @@ const actions = {
         commit("RESET_NON_ACADEMIC_DEPARTMENTS");
       })
       .finally(res => {
+        return res;
+      });
+  },
+  fetchSubDepartment({ commit, dispatch }, collection) {
+    dispatch("showLoader");
+    commit("RESET_SUB_DYNAMIC_DEPARTMENTS");
+    const db = firebase.firestore();
+    return db
+      .collection(collection)
+      .get()
+      .then(res => {
+        let data = [];
+        res.forEach(doc => {
+          let temp = { ...doc.data(), id: doc.id };
+          data.push(temp);
+        });
+        commit("SET_SUB_DYNAMIC_DEPARTMENTS", data);
+      })
+      .catch(err => {
+        console.log("error while fetching sub departments", err);
+      })
+      .finally(res => {
+        dispatch("hideLoader");
         return res;
       });
   },
@@ -77,6 +102,34 @@ const actions = {
         });
         return err;
       });
+  },
+  createSubDepartment({ dispatch }, payload) {
+    const db = firebase.firestore();
+    let { mainCollection, doc_id, dept_name } = payload;
+    let data = {
+      Department_name: dept_name.toUpperCase().replaceAll(" ", "_")
+    };
+    return db
+      .collection(mainCollection)
+      .doc(doc_id)
+      .collection(doc_id)
+      .doc(dept_name)
+      .set(data)
+      .then(res => {
+        dispatch("showToast", {
+          class: "bg-success text-white",
+          message: "Department Created!"
+        });
+        dispatch("fetchSubDepartment", `${mainCollection}/${doc_id}/${doc_id}`);
+        return res;
+      })
+      .catch(err => {
+        dispatch("showToast", {
+          class: "bg-danger text-white",
+          message: "Error while creating!"
+        });
+        return err;
+      });
   }
 };
 const mutations = {
@@ -91,6 +144,12 @@ const mutations = {
   },
   ["RESET_NON_ACADEMIC_DEPARTMENTS"](state) {
     state.non_academic = [];
+  },
+  ["SET_SUB_DYNAMIC_DEPARTMENTS"](state, payload) {
+    state.subDepartment = payload;
+  },
+  ["RESET_SUB_DYNAMIC_DEPARTMENTS"](state) {
+    state.subDepartment = [];
   }
 };
 

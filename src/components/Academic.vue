@@ -19,7 +19,7 @@
             >{{ data.id | formatDepartment }}</CButton
           >
         </CCol>
-        <CCol md="6" class="content-center">
+        <CCol md="6" class="content-center" v-if="isAdmin">
           <CButton
             class="btn-dept-color"
             :style="`background-color:${getRandomColor}`"
@@ -49,7 +49,7 @@ export default {
     showAddDepartmentModal: false
   }),
   computed: {
-    ...mapGetters(["getScreen", "getAcademicDept", "getRandomColor"])
+    ...mapGetters(["getScreen", "getAcademicDept", "getRandomColor", "isAdmin"])
   },
   filters: {
     formatDepartment(value) {

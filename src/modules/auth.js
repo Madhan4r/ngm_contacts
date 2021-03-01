@@ -131,6 +131,17 @@ const actions = {
         return res;
       });
     }
+  },
+  getAllDatabase({ dispatch }) {
+    let appendAction = [];
+    dispatch("showLoader");
+    appendAction = [...appendAction, dispatch("fetchAllUsers")];
+    appendAction = [...appendAction, dispatch("fetchAcademicDept")];
+    appendAction = [...appendAction, dispatch("fetchNonAcademicDept")];
+    return Promise.all(appendAction).then(res => {
+      dispatch("hideLoader");
+      return res;
+    });
   }
 };
 

@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  name: "Loader",
+  name: "Loader"
 };
 </script>
 
