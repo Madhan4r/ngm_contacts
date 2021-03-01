@@ -91,8 +91,8 @@ const actions = {
           class: "bg-success text-white",
           message: "Department Created!"
         });
-        dispatch("getAcademicDept");
-        dispatch("getNonAcademicDept");
+        dispatch("fetchAcademicDept");
+        dispatch("fetchNonAcademicDept");
         return res;
       })
       .catch(err => {
