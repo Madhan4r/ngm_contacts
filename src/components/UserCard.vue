@@ -1,5 +1,5 @@
 <template>
-  <div class="col-md-4">
+  <div class="col-md-4" v-if="!isLoading">
     <div class="card user-card">
       <div class="card-header">
         <h5>{{ toTitleCase(getUserName) }}</h5>
@@ -7,11 +7,7 @@
       <div class="card-block">
         <div class="user-image">
           <img
-            :src="
-              getGender == 'male'
-                ? 'https://bootdey.com/img/Content/avatar/avatar7.png'
-                : 'https://bootdey.com/img/Content/avatar/avatar8.png'
-            "
+            :src="getGenderImage"
             class="img-radius"
             alt="User-Profile-Image"
           />
@@ -28,15 +24,13 @@
         <div class="row justify-content-center user-social-link">
           <div class="col-auto">
             <a :href="`tel:+91${getPhone}`">
-              <fas-icon
-                :icon="['fas', 'phone']"
-                class="text-facebook"
-              ></fas-icon>
+              <fas-icon :icon="['fas', 'phone']" class="text-phone"></fas-icon>
             </a>
           </div>
           <div class="col-auto" v-if="getWhatsapp">
             <a
               :href="`https://api.whatsapp.com/send?phone=+*91${getWhatsapp}*`"
+              target="_blank"
             >
               <svg
                 enable-background="new 0 0 24 24"
@@ -68,19 +62,36 @@
               ></fas-icon>
             </a>
           </div>
+          <div class="col-auto" v-if="isAdmin">
+            <a href="#!" @click="editUserAsAdmin()">
+              <fas-icon :icon="['fas', 'edit']" style="color: black"></fas-icon>
+            </a>
+          </div>
         </div>
       </div>
     </div>
+    <add-modify-user
+      v-if="addModifyUserModal"
+      :isShowPopup="addModifyUserModal"
+      :userDetail="userDetail"
+    />
   </div>
 </template>
 
 <script>
 import moment from "moment";
+import { mapGetters } from "vuex";
+import AddModifyUser from "./AddModifyUser.vue";
 
 export default {
   name: "UserCard",
+  components: { AddModifyUser },
   props: ["userDetail"],
+  data: () => ({
+    addModifyUserModal: false
+  }),
   computed: {
+    ...mapGetters(["isAdmin", "isLoading"]),
     getUserName() {
       return (
         `${this.userDetail?.first_name} ${this.userDetail?.last_name}` || ""
@@ -91,6 +102,19 @@ export default {
     },
     getGender() {
       return this.userDetail?.gender;
+    },
+    getGenderImage() {
+      switch (this.userDetail?.gender) {
+        case "male":
+          return "https://bootdey.com/img/Content/avatar/avatar7.png";
+        case "female":
+          return "https://bootdey.com/img/Content/avatar/avatar8.png";
+        case "others":
+          return "https://bootdey.com/img/Content/avatar/avatar8.png";
+
+        default:
+          return "";
+      }
     },
     getDOB() {
       let date = this.userDetail?.dob;
@@ -114,6 +138,9 @@ export default {
     },
     openMail() {
       window.location.href = `mailto:${this.userDetail?.email}`;
+    },
+    editUserAsAdmin() {
+      this.addModifyUserModal = true;
     }
   }
 };

@@ -6,7 +6,10 @@
       :closeOnBackdrop="true"
       :centered="true"
     >
-      <template #header> <h5>Change Password</h5> </template>
+      <template #header>
+        <h5>Change Password</h5>
+        <CButtonClose @click="close()" class="text-black" />
+      </template>
       <template #footer>
         <div>
           <CButton class="btn-secondary mr-2" @click="close()">Cancel</CButton>

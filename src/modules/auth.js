@@ -11,6 +11,9 @@ const getters = {
   getUserData: state => state.userData,
   getScreen() {
     return screen;
+  },
+  isAdmin: state => {
+    return state.userData?.role == "admin" ? true : false;
   }
 };
 
@@ -49,8 +52,6 @@ const actions = {
   },
   logout({ dispatch, commit }) {
     localStorage.removeItem("userEmail");
-    localStorage.removeItem("departments");
-    localStorage.removeItem("users");
     router.push("/login");
     dispatch("showToast", {
       class: "bg-success text-white",
@@ -121,20 +122,14 @@ const actions = {
   },
   initialFetchAfterLogin({ dispatch, getters, commit }) {
     let { getUserByEmail, getUserEmail } = getters;
-    let appendAction = [];
-    appendAction = [...appendAction, dispatch("getAllDatabase")];
-    return Promise.all(appendAction).then(res => {
-      let userData = getUserByEmail(getUserEmail);
-      commit("SET_USER_DATA", userData?.length ? userData[0] : []);
-      return res;
-    });
-  },
-  initialOfflineMode({ getters, commit, dispatch }) {
-    let { getUserByEmail, getUserEmail } = getters;
-    let userData = getUserByEmail(getUserEmail);
-    if (userData?.length) {
-      commit("SET_USER_DATA", userData[0]);
-      dispatch("initialFetchAfterLogin");
+    if (getUserEmail) {
+      let appendAction = [];
+      appendAction = [...appendAction, dispatch("getAllDatabase")];
+      return Promise.all(appendAction).then(res => {
+        let userData = getUserByEmail(getUserEmail);
+        commit("SET_USER_DATA", userData?.length ? userData[0] : []);
+        return res;
+      });
     }
   }
 };
