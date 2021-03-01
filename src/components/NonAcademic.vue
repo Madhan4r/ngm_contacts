@@ -4,7 +4,7 @@
     :style="`min-height: ${getScreen.availHeight - 170}px`"
   >
     <div class="box-container col-11 col-sm-8 p-0 pt-3 pb-4">
-      <h5 class="text-center mb-4">Non-Academic Staffs</h5>
+      <h5 class="text-center mb-4">Non-Academic</h5>
       <CRow>
         <CCol
           md="6"
