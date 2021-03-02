@@ -27,9 +27,9 @@
       </template>
 
       <div class="pt-3 text-left" v-if="isFetching">
-        <ValidationObserver ref="editProfile" v-slot="{ handleSubmit }">
+        <ValidationObserver ref="modifyUser" v-slot="{ handleSubmit }">
           <form
-            id="editProfile"
+            id="modifyUser"
             @submit.prevent="handleSubmit()"
             v-on:keypress.enter.prevent
             class="form"
@@ -87,13 +87,21 @@
                   <CCol>
                     <div class="form-group">
                       <label class="required">Email</label>
-                      <input
-                        class="form-control"
-                        type="text"
-                        placeholder="user@example.com"
-                        v-model="profile.email"
-                        :disabled="userDetail.id ? true : false"
-                      />
+                      <ValidationProvider
+                        rules="required|email"
+                        v-slot="{ errors }"
+                      >
+                        <input
+                          class="form-control"
+                          type="text"
+                          placeholder="user@example.com"
+                          v-model="profile.email"
+                          :disabled="userDetail.id ? true : false"
+                        />
+                        <small class="has-error" v-if="errors[0]">{{
+                          errors[0]
+                        }}</small>
+                      </ValidationProvider>
                     </div>
                   </CCol>
                 </CRow>
@@ -103,7 +111,7 @@
                       <label>Date of Birth</label>
                       <ValidationProvider
                         name="dob"
-                        rules="required|date_validate|no_future_date"
+                        rules="date_validate|no_future_date"
                         v-slot="{ errors }"
                       >
                         <input
@@ -120,17 +128,24 @@
                   <CCol md="6">
                     <div class="form-group">
                       <label class="required">Gender</label>
-                      <Select
-                        name="gender"
-                        :value="profile.gender"
-                        @input="handleSelect"
-                        :options="
-                          options && options['gender'] ? options['gender'] : []
-                        "
-                        :taggable="false"
-                        :multiple="false"
-                        :clearable="false"
-                      />
+                      <ValidationProvider rules="required" v-slot="{ errors }">
+                        <Select
+                          name="gender"
+                          :value="profile.gender"
+                          @input="handleSelect"
+                          :options="
+                            options && options['gender']
+                              ? options['gender']
+                              : []
+                          "
+                          :taggable="false"
+                          :multiple="false"
+                          :clearable="false"
+                        />
+                        <small class="has-error" v-if="errors[0]">{{
+                          errors[0]
+                        }}</small>
+                      </ValidationProvider>
                     </div>
                   </CCol>
                 </CRow>
@@ -193,24 +208,29 @@
                 <CRow>
                   <CCol md="6">
                     <div class="form-group">
-                      <label>Department</label>
+                      <label class="required">Department</label>
                       <input
                         class="form-control"
                         type="text"
-                        v-model="profile.dept"
+                        v-model="profile.department"
                         :disabled="true"
                       />
                     </div>
                   </CCol>
                   <CCol md="6">
                     <div class="form-group">
-                      <label>Role</label>
-                      <input
-                        class="form-control"
-                        type="text"
-                        v-model="profile.staff_role"
-                        :disabled="true"
-                      />
+                      <label class="required">Role</label>
+                      <ValidationProvider rules="required" v-slot="{ errors }">
+                        <input
+                          class="form-control"
+                          type="text"
+                          v-model="profile.staff_role"
+                          :disabled="isAdmin ? false : true"
+                        />
+                        <small class="has-error" v-if="errors[0]">{{
+                          errors[0]
+                        }}</small>
+                      </ValidationProvider>
                     </div>
                   </CCol>
                 </CRow>
@@ -231,9 +251,11 @@ import {
   alpha_spaces,
   required,
   numeric,
-  length
+  length,
+  email
 } from "vee-validate/dist/rules";
 import moment from "moment";
+import { mapActions, mapGetters } from "vuex";
 
 extend("required", { ...required, message: "This field is required" });
 extend("numeric", { ...numeric, message: "Only numbers are allowed" });
@@ -256,10 +278,20 @@ extend("date_validate", value => {
   }
   return "Invalid date! Enter a valid date";
 });
+extend("email", { ...email, message: "Invalid email" });
 
 export default {
   name: "AddModifyUser",
-  props: ["isShowPopup", "userDetail"],
+  props: {
+    isShowPopup: {
+      type: Boolean,
+      default: false
+    },
+    userDetail: {
+      type: Object,
+      default: () => {}
+    }
+  },
   components: {
     Select
   },
@@ -267,6 +299,7 @@ export default {
     profile: {}
   }),
   computed: {
+    ...mapGetters(["isAdmin"]),
     isFetching() {
       if (!isEmptyObjectCheck(this.userDetail)) {
         this.setUserData(this.userDetail);
@@ -284,6 +317,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["showToast"]),
     setUserData(data) {
       let profileData = deepClone(data);
       this.profile = {
@@ -306,7 +340,47 @@ export default {
       this.profile[name] = value;
     },
     close() {
-      this.$parent.addModifyUserModal = false;
+      this.$emit("modalCallBack", false);
+    },
+    async updateProfile() {
+      const isValid = await this.$refs.modifyUser.validate();
+      const errors = Object.values(this.$refs.modifyUser.errors).flat();
+      if (!isValid) {
+        let el = this.$el.getElementsByClassName("has-error")[0];
+        el.scrollIntoView(true);
+        window.scrollBy(0, -140);
+        this.showToast({
+          class: "bg-danger text-white",
+          message: errors[0] || "Please fill mandatory fields!"
+        });
+        return;
+      } else {
+        let payload = {
+          first_name: this.profile.first_name,
+          last_name: this.profile.last_name,
+          full_name: `${this.profile.first_name} ${this.profile.last_name}`,
+          email: this.profile.email,
+          gender: this.profile.gender?.code,
+          phone_no: this.profile.phone_no,
+          staff_role: this.toTitleCase(this.profile.staff_role.toLowerCase()),
+          whatsapp: this.profile.whatsapp || "",
+          dob: this.profile.dob || "",
+          reference: this.profile.reference || "",
+          department: this.profile.department
+        };
+        if (this.profile.id) {
+          payload = {
+            ...payload,
+            id: this.profile.id
+          };
+        } else {
+          payload = {
+            ...payload,
+            created_on: moment().format("YYYY-MM-DD")
+          };
+        }
+        this.$emit("modalCallBack", true, payload);
+      }
     },
     deleteProfile() {
       let cnfm = confirm("Are you Sure to delete this user?");

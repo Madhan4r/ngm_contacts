@@ -121,7 +121,7 @@ export default {
       return date ? moment(date).format("DD MMM YYYY") : "";
     },
     getDept() {
-      return this.userDetail?.dept || "";
+      return this.userDetail?.department || "";
     },
     getPhone() {
       return this.userDetail?.phone_no || "";

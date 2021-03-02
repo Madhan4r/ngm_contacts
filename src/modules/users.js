@@ -15,12 +15,12 @@ const getters = {
   },
   getPrincipal: state => {
     return state.users?.length
-      ? state.users.filter(val => val.staff_role == "principal")
+      ? state.users.filter(val => val?.staff_role == "principal")
       : [];
   },
   getUsersByReference: state => reference => {
     return state.users?.length
-      ? state.users.filter(val => val.reference == reference)
+      ? state.users.filter(val => val?.reference == reference)
       : [];
   }
 };
@@ -74,13 +74,46 @@ const actions = {
   updateUsersData({ commit, getters, dispatch }) {
     let { getUserByEmail, getUserEmail } = getters;
     let appendAction = [];
-    appendAction.push(dispatch("getAllUsers"));
+    appendAction.push(dispatch("fetchAllUsers"));
     Promise.all(appendAction).then(() => {
       let userData = getUserByEmail(getUserEmail);
       if (userData?.length) {
         commit("SET_USER_DATA", userData[0]);
       }
     });
+  },
+  createUser({ dispatch }, payload) {
+    let { email, phone_no } = payload;
+    return firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, phone_no)
+      .then(() => {
+        return firebase
+          .firestore()
+          .collection("users")
+          .doc()
+          .set(payload)
+          .then(res => {
+            dispatch("fetchAllUsers");
+            dispatch("showToast", {
+              class: "bg-success text-white",
+              message: "User Created!"
+            });
+            return res;
+          })
+          .catch(err => {
+            console.log(err);
+            return err;
+          });
+      })
+      .catch(error => {
+        dispatch("showToast", {
+          class: "bg-danger text-white",
+          message: "Email ALready Exists!"
+        });
+        console.log(error);
+        return error;
+      });
   }
 };
 const mutations = {
