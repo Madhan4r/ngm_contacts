@@ -60,6 +60,9 @@
 
   .heading {
     margin-bottom: 60px !important;
+    background: -webkit-linear-gradient(#ffd54f, #d500f9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   ::placeholder {

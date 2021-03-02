@@ -107,30 +107,6 @@ export default {
     navigateToForgot() {
       this.$router.push("/forgot");
     }
-    // createContact() {
-    //   const db = this.$firebase.firestore();
-    //   db.collection("users")
-    //     .add({ name: "madhan", phno: 12345678 })
-    //     .then(() => {
-    //       console.log("Document successfully written!");
-    //     })
-    //     .catch((error) => {
-    //       console.error("Error writing document: ", error);
-    //     });
-    // },
-    // deleteContact() {
-    //   const db = this.$firebase.firestore();
-    //   let id = this.id;
-    //   db.collection("users")
-    //     .doc(id)
-    //     .delete()
-    //     .then(() => {
-    //       console.log("Document successfully deleted!");
-    //     })
-    //     .catch((error) => {
-    //       console.error("Error removing document: ", error);
-    //     });
-    // },
   },
   mounted() {
     if (this.getUserEmail) {

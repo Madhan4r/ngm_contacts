@@ -51,6 +51,7 @@ const actions = {
       );
   },
   logout({ dispatch, commit }) {
+    firebase.auth().signOut();
     localStorage.removeItem("userEmail");
     router.push("/login");
     dispatch("showToast", {

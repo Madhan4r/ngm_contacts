@@ -15,7 +15,7 @@
           <CButton
             class="btn-dept-color"
             :style="`background-color:${getRandomColor}`"
-            @click="navigateTo(`/dynamic-sub-dept/non-academic/${data.id}`)"
+            @click="navigateTo(`/dynamic-sub-dept/non_academic/${data.id}`)"
             >{{ data.id | formatDepartment }}</CButton
           >
         </CCol>

@@ -10,7 +10,16 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     isLoading: false,
-    randomColor: ["grey", "red", "green", "darkgrey"]
+    randomColor: [
+      "grey",
+      "red",
+      "blueviolet",
+      "darkgrey",
+      "#ffd54f",
+      "deeppink",
+      "brown",
+      "darkviolet"
+    ]
   },
   mutations: {
     ["SET_LOADER"](state, payload) {
