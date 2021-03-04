@@ -26,6 +26,15 @@
           >
         </CCol>
       </CRow>
+      <div class="mt-3 mb-3" v-if="getUsers.length">
+        <CRow class="content-center">
+          <user-card
+            v-for="(data, index) in getUsers"
+            :userDetail="data"
+            :key="index"
+          />
+        </CRow>
+      </div>
       <CRow v-if="isAdmin">
         <CCol md="6" class="content-center">
           <CButton
@@ -55,17 +64,23 @@
       v-if="addModifyUserModal"
       :isShowPopup="addModifyUserModal"
       @modalCallBack="addUserCallBack"
-      :existingDepartments="getSubDepartment"
+      :userDetail="{
+        department: getDepartment,
+        reference: `${mainDepartment}/${subDepartment}`
+      }"
     />
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import AddModifyUser from "../AddModifyUser.vue";
+import UserCard from "../UserCard.vue";
 import AddDepartment from "./AddDepartment.vue";
+
 export default {
-  components: { AddDepartment },
   name: "DynamicSubDepartment",
+  components: { AddDepartment, AddModifyUser, UserCard },
   data: () => ({
     mainDepartment: "",
     subDepartment: "",
@@ -77,11 +92,23 @@ export default {
       "getScreen",
       "getSubDepartment",
       "getRandomColor",
-      "isAdmin"
-    ])
+      "isAdmin",
+      "getUsersByReference"
+    ]),
+    getUsers() {
+      if (this.subDepartment && this.mainDepartment) {
+        return this.getUsersByReference(
+          `${this.mainDepartment}/${this.subDepartment}`
+        );
+      }
+      return [];
+    },
+    getDepartment() {
+      return this.toTitleCase(this.subDepartment.replaceAll("_", " ")) || "";
+    }
   },
   methods: {
-    ...mapActions(["fetchSubDepartment", "createSubDepartment"]),
+    ...mapActions(["fetchSubDepartment", "createSubDepartment", "createUser"]),
     createSubDept() {
       this.showAddDepartmentModal = true;
     },
@@ -102,7 +129,20 @@ export default {
       this.addModifyUserModal = true;
     },
     addUserCallBack(action, value) {
-      console.log(action, value);
+      if (action) {
+        if (!value.id) {
+          this.createUser(value).then(() => {
+            this.addModifyUserModal = false;
+          });
+        }
+      } else {
+        this.addModifyUserModal = false;
+      }
+    },
+    toTitleCase(str) {
+      return str?.replace(/\w\S*/g, function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      });
     }
   },
   filters: {

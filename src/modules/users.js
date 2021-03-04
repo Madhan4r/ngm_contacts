@@ -15,12 +15,16 @@ const getters = {
   },
   getPrincipal: state => {
     return state.users?.length
-      ? state.users.filter(val => val?.staff_role == "principal")
+      ? state.users.filter(val => val?.staff_role == "Principal")
       : [];
   },
   getUsersByReference: state => reference => {
     return state.users?.length
-      ? state.users.filter(val => val?.reference == reference)
+      ? state.users
+          .filter(val => val?.reference == reference)
+          .sort(a => {
+            return a.staff_role == "Hod";
+          })
       : [];
   }
 };
@@ -87,11 +91,12 @@ const actions = {
     return firebase
       .auth()
       .createUserWithEmailAndPassword(email, phone_no)
-      .then(() => {
+      .then(res => {
+        let { user } = res;
         return firebase
           .firestore()
           .collection("users")
-          .doc()
+          .doc(user.uid)
           .set(payload)
           .then(res => {
             dispatch("fetchAllUsers");
@@ -115,6 +120,12 @@ const actions = {
         return error;
       });
   }
+  // removeUser({dispatch},payload){
+  //   const {id, email} = payload;
+  //   return firebase.auth
+  //   dispatch("fetchAllUsers");
+
+  // }
 };
 const mutations = {
   ["SET_USERS"](state, payload) {
