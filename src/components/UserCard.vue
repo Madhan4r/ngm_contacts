@@ -63,7 +63,7 @@
             </a>
           </div>
           <div class="col-auto" v-if="isAdmin">
-            <a href="#!" @click="editUserAsAdmin()">
+            <a href="#" @click="editUserAsAdmin()">
               <fas-icon :icon="['fas', 'edit']" style="color: black"></fas-icon>
             </a>
           </div>
@@ -74,13 +74,14 @@
       v-if="addModifyUserModal"
       :isShowPopup="addModifyUserModal"
       :userDetail="userDetail"
+      @modalCallBack="modifyUser"
     />
   </div>
 </template>
 
 <script>
 import moment from "moment";
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import AddModifyUser from "./AddModifyUser.vue";
 
 export default {
@@ -131,6 +132,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(["updateUser"]),
     toTitleCase(str) {
       return str?.replace(/\w\S*/g, function(txt) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
@@ -141,6 +143,16 @@ export default {
     },
     editUserAsAdmin() {
       this.addModifyUserModal = true;
+    },
+    modifyUser(action, value) {
+      if (action) {
+        let { id, ...rest } = value;
+        this.updateUser({ id: id, payload: rest }).then(() => {
+          this.addModifyUserModal = false;
+        });
+      } else {
+        this.addModifyUserModal = false;
+      }
     }
   }
 };

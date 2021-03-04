@@ -26,13 +26,14 @@ require("firebase/auth");
 
 /* Paste your firebase configuration below */
 var firebaseConfig = {
-  apiKey: "AIzaSyAMcpIR1eQbARWzLQvwZKH77wLwNJOZf0M",
-  authDomain: "ngm4contacts.firebaseapp.com",
-  databaseURL: "https://ngm4contacts-default-rtdb.firebaseio.com",
-  projectId: "ngm4contacts",
-  storageBucket: "ngm4contacts.appspot.com",
-  messagingSenderId: "786370858500",
-  appId: "1:786370858500:web:6f11b10c9530db21d26f51"
+  apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
+  authDomain: process.env.VUE_APP_FIREBASE_PROJECT_ID + ".firebaseapp.com",
+  databaseURL:
+    "https://" +
+    process.env.VUE_APP_FIREBASE_PROJECT_ID +
+    "-default-rtdb.firebaseio.com",
+  projectId: process.env.VUE_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.VUE_APP_FIREBASE_PROJECT_ID + ".appspot.com"
 };
 
 /* Initialize firebase with your configuration */

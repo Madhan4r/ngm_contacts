@@ -70,7 +70,7 @@ export default {
       return [];
     },
     getDepartment() {
-      return this.department.toUpperCase().replaceAll("_", " ") || "";
+      return this.toTitleCase(this.department.replaceAll("_", " ")) || "";
     }
   },
   methods: {
@@ -88,7 +88,12 @@ export default {
       } else {
         this.addModifyUserModal = false;
       }
-    }
+    },
+    toTitleCase(str) {
+      return str?.replace(/\w\S*/g, function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      });
+    },
   },
   mounted() {
     const {
