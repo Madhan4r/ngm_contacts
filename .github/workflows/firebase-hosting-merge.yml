@@ -15,8 +15,8 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_NGM4CONTACTS }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_NGMSTAFFCONTACTS }}'
           channelId: live
-          projectId: ngm4contacts
+          projectId: ngmstaffcontacts
         env:
           FIREBASE_CLI_PREVIEWS: hostingchannels
