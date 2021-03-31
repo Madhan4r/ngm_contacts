@@ -128,7 +128,7 @@ const actions = {
       appendAction = [...appendAction, dispatch("getAllDatabase")];
       return Promise.all(appendAction).then(res => {
         let userData = getUserByEmail(getUserEmail);
-        if (userData[0]?.length) {
+        if (userData?.length) {
           commit("SET_USER_DATA", userData[0]);
         } else {
           dispatch("logout");

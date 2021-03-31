@@ -157,7 +157,7 @@
                                         <label>Date of Birth</label>
                                         <ValidationProvider
                                           name="dob"
-                                          rules="required|date_validate|no_future_date"
+                                          rules="date_validate|no_future_date"
                                           v-slot="{ errors }"
                                         >
                                           <input
