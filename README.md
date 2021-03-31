@@ -1,6 +1,7 @@
-# ngm_contacts
+# NGM Staff Contacts
 
-NGM Contacts url: "https://ngm4contacts.web.app/"
+NGM Contacts url: "https://ngmstaffcontacts.web.app"
+Secondary url: "ngmstaffcontacts.firebaseapp.com"
 
 ## Project setup
 ```
