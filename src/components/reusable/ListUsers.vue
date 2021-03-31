@@ -4,7 +4,7 @@
     :style="`min-height: ${getScreen.availHeight - 170}px`"
   >
     <div class="box-container col-11 col-sm-8 p-0 pt-3 pb-5">
-      <h5 class="mb-4 text-center">{{ getDepartment }}</h5>
+      <h5 class="mb-4 text-center">{{ getDepartment.toUpperCase() }}</h5>
       <CRow class="content-center">
         <user-card
           v-for="(data, index) in getUsers"
