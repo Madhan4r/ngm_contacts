@@ -119,13 +119,38 @@ const actions = {
         console.log(error);
         return error;
       });
+  },
+  removeUser({ dispatch }, payload) {
+    const { id } = payload;
+    if (payload?.role == "admin") {
+      dispatch("showToast", {
+        class: "bg-danger text-white",
+        message: "Admin Cannot be Deleted!"
+      });
+      return;
+    }
+    return firebase
+      .firestore()
+      .collection("users")
+      .doc(id)
+      .delete()
+      .then(res => {
+        dispatch("fetchAllUsers");
+        dispatch("showToast", {
+          class: "bg-success text-white",
+          message: "User Deleted Successfully!"
+        });
+        return res;
+      })
+      .catch(error => {
+        dispatch("showToast", {
+          class: "bg-danger text-white",
+          message: "Delete user Failed"
+        });
+        console.log(error);
+        return error;
+      });
   }
-  // removeUser({dispatch},payload){
-  //   const {id, email} = payload;
-  //   return firebase.auth
-  //   dispatch("fetchAllUsers");
-
-  // }
 };
 const mutations = {
   ["SET_USERS"](state, payload) {

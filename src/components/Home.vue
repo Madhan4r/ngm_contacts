@@ -22,7 +22,10 @@
         </div>
         <div class="container mb-5" v-if="!showSearchPage">
           <CRow style="justify-content: center">
-            <user-card :userDetail="getPrincipal[0]" />
+            <user-card
+              :userDetail="getPrincipal[0]"
+              v-if="getPrincipal[0] && getPrincipal[0].length"
+            />
             <div class="col-md-4">
               <div
                 class="d-flex flex-column justify-content-center h-100"

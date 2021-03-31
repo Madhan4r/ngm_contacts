@@ -128,7 +128,15 @@ const actions = {
       appendAction = [...appendAction, dispatch("getAllDatabase")];
       return Promise.all(appendAction).then(res => {
         let userData = getUserByEmail(getUserEmail);
-        commit("SET_USER_DATA", userData?.length ? userData[0] : []);
+        if (userData[0]?.length) {
+          commit("SET_USER_DATA", userData[0]);
+        } else {
+          dispatch("logout");
+          dispatch("showToast", {
+            class: "bg-danger text-white",
+            message: "Your account has been modified or deleted!"
+          });
+        }
         return res;
       });
     }

@@ -219,13 +219,36 @@
                   </CCol>
                   <CCol md="6">
                     <div class="form-group">
-                      <label class="required">Role</label>
+                      <label class="required">Staff Role</label>
                       <ValidationProvider rules="required" v-slot="{ errors }">
                         <input
                           class="form-control"
                           type="text"
                           v-model="profile.staff_role"
                           :disabled="isAdmin ? false : true"
+                        />
+                        <small class="has-error" v-if="errors[0]">{{
+                          errors[0]
+                        }}</small>
+                      </ValidationProvider>
+                    </div>
+                  </CCol>
+                  <CCol md="6">
+                    <div class="form-group">
+                      <label class="required">Administrator</label>
+                      <ValidationProvider rules="required" v-slot="{ errors }">
+                        <Select
+                          name="role"
+                          :value="profile.role"
+                          @input="handleSelect"
+                          :options="
+                            options && options['boolean']
+                              ? options['boolean']
+                              : []
+                          "
+                          :taggable="false"
+                          :multiple="false"
+                          :clearable="false"
                         />
                         <small class="has-error" v-if="errors[0]">{{
                           errors[0]
@@ -312,12 +335,19 @@ export default {
           { label: "Male", code: "male" },
           { label: "Female", code: "female" },
           { label: "Others", code: "others" }
+        ],
+        boolean: [
+          { label: "Yes", code: "admin" },
+          {
+            label: "No",
+            code: "user"
+          }
         ]
       };
     }
   },
   methods: {
-    ...mapActions(["showToast"]),
+    ...mapActions(["showToast", "removeUser"]),
     setUserData(data) {
       let profileData = deepClone(data);
       this.profile = {
@@ -328,7 +358,13 @@ export default {
               code: profileData?.gender
             }
           : [],
-        staff_role: this.toTitleCase(profileData?.staff_role)
+        staff_role: this.toTitleCase(profileData?.staff_role),
+        role: profileData?.gender
+          ? {
+              label: profileData?.role == "admin" ? "Yes" : "No",
+              code: profileData?.role
+            }
+          : []
       };
     },
     toTitleCase(str) {
@@ -366,7 +402,8 @@ export default {
           whatsapp: this.profile.whatsapp || "",
           dob: this.profile.dob || "",
           reference: this.profile.reference || "",
-          department: this.profile.department
+          department: this.profile.department,
+          role: this.profile.role?.code
         };
         if (this.profile.id) {
           payload = {
@@ -385,7 +422,9 @@ export default {
     deleteProfile() {
       let cnfm = confirm("Are you Sure to delete this user?");
       if (cnfm) {
-        console.log("confirm");
+        this.removeUser(this.userDetail).then(() => {
+          this.close();
+        });
       }
     }
   }
