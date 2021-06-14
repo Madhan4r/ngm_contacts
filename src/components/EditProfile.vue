@@ -259,7 +259,7 @@
                                         <input
                                           class="form-control"
                                           type="text"
-                                          v-model="profile.dept"
+                                          v-model="profile.department"
                                           :disabled="true"
                                         />
                                       </div>
